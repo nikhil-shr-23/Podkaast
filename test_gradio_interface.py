@@ -6,7 +6,7 @@ def test_gradio_interface():
     try:
         print("🧪 Testing Gradio Interface Loading...")
         
-        from podcast_app_working import demo
+        from podkaast_app import demo
         
         print("✅ App imported successfully")
         
@@ -37,7 +37,7 @@ def main():
     
     if success:
         print("\n🎉 Interface test passed! You can now run the full app.")
-        print("Run: python3 podcast_app_working.py")
+        print("Run: python3 podkaast_app.py")
     else:
         print("\n⚠️  Interface test failed. Check the errors above.")
     

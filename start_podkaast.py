@@ -40,7 +40,7 @@ def start_application():
         print("\n🚀 Starting PDF2Podcast Application...")
         print("=" * 50)
         
-        from podcast_app_working import demo
+        from podkaast_app import demo
         
         print("✅ Application loaded successfully!")
         print("✅ Interface components ready!")

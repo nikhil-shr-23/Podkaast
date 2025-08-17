@@ -8,7 +8,7 @@ def test_pdf_text_extraction():
     try:
         test_content = b"Test PDF content for podcast generation"
         
-        from podcast_app_working import extract_text_from_pdf
+        from podkaast_app import extract_text_from_pdf
         
         with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
             tmp_file.write(test_content)
@@ -30,7 +30,7 @@ def test_script_generation():
     print("\n🧪 Testing Podcast Script Generation...")
     
     try:
-        from podcast_app_working import generate_podcast_script
+        from podkaast_app import generate_podcast_script
         
         test_text = "This is a sample text for testing podcast script generation."
         script = generate_podcast_script(test_text, "Test Question", "Fun", "Short (1-2 min)", "English")
@@ -51,7 +51,7 @@ def test_tts_functionality():
     print("\n🧪 Testing Text-to-Speech...")
     
     try:
-        from podcast_app_working import text_to_speech_pyttsx3
+        from podkaast_app import text_to_speech_pyttsx3
         
         test_text = "Hello, this is a test of the text to speech functionality."
         audio_path = text_to_speech_pyttsx3(test_text)
@@ -74,7 +74,7 @@ def test_gtts_functionality():
     print("\n🧪 Testing Google TTS (Online)...")
     
     try:
-        from podcast_app_working import text_to_speech_gtts
+        from podkaast_app import text_to_speech_gtts
         
         test_text = "Hello, this is a test of Google text to speech."
         audio_path = text_to_speech_gtts(test_text, "English")
@@ -125,7 +125,7 @@ def main():
     
     if all_passed:
         print("\n🎉 All tests passed! Your working version is ready.")
-        print("You can now run: python3 podcast_app_working.py")
+        print("You can now run: python3 podkaast_app.py")
     else:
         print("\n⚠️  Some tests failed. Check the errors above.")
     

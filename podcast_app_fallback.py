@@ -125,8 +125,8 @@ def convert_pdf_to_podcast(pdf_file, url, question, tone, length, language, use_
         logger.error(f"Main conversion failed: {str(e)}")
         return convert_pdf_to_podcast_fallback(pdf_file, url, question, tone, length, language, use_advanced_audio)
 
-with gr.Blocks(title="LumeCast: Convert PDFs to Podcasts") as demo:
-    gr.Markdown("# LumeCast: Convert PDFs to Podcasts")
+with gr.Blocks(title="Podkaast: Convert PDFs to Podcasts") as demo:
+    gr.Markdown("# Podkaast: Convert PDFs to Podcasts")
     gr.Markdown("⚠️ **Note:** The original API is experiencing issues. This version includes fallback functionality.")
     
     with gr.Row():

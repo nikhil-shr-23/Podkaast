@@ -1,4 +1,4 @@
-# 🎙️ PDF2Podcast - Convert PDFs to Podcasts
+# 🎙️ Podkaast - Convert PDFs to Podcasts
 
 A web application that converts PDF documents into engaging podcasts using advanced text-to-speech technology. Built with Gradio and featuring multiple TTS engines for reliable audio generation.
 
@@ -26,7 +26,7 @@ A web application that converts PDF documents into engaging podcasts using advan
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd PDF2Podcast-main
+   cd Podkaast-main
    ```
 
 2. **Install dependencies**
@@ -65,8 +65,8 @@ A web application that converts PDF documents into engaging podcasts using advan
 ## 🛠️ Available Scripts
 
 ### Main Application
-- **`podcast_app_working.py`** - Fully functional main application
-- **`start_podcast_app.py`** - Smart startup script with dependency checking
+- **`podkaast_app.py`** - Fully functional main application
+- **`start_podkaast.py`** - Smart startup script with dependency checking
 
 ### Testing & Development
 - **`demo_working.py`** - Test core functionality without UI
@@ -111,7 +111,7 @@ edge-tts>=6.1.0        # Microsoft Edge TTS (optional)
 
 ### Local Development
 ```bash
-python3 podcast_app_working.py
+python3 podkaast_app.py
 ```
 
 ### Production Deployment
@@ -120,7 +120,7 @@ python3 podcast_app_working.py
 gradio deploy
 
 # Or use the startup script
-python3 start_podcast_app.py
+python3 start_podkaast.py
 ```
 
 ### Docker (Coming Soon)
@@ -203,7 +203,7 @@ python3 demo_working.py
 python3 test_gradio_interface.py
 
 # Start development server
-python3 start_podcast_app.py
+python3 start_podkaast.py
 ```
 
 ## 📄 License
@@ -244,11 +244,11 @@ Please include:
 - [ ] **API Endpoints** for programmatic access
 
 ### Version History
-- **v2.0.0** - Working version with reliable TTS engines
+- **v2.0.0** - Podkaast working version with reliable TTS engines
 - **v1.0.0** - Initial release (had API issues)
 
 ---
 
 **Made with ❤️ for content creators, educators, and podcast enthusiasts**
 
-*Transform your documents into engaging audio content with PDF2Podcast!* 🎙️✨
+*Transform your documents into engaging audio content with Podkaast!* 🎙️✨
