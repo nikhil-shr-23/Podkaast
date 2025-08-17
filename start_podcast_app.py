@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
-"""
-Startup script for PDF2Podcast application
-This script handles startup errors gracefully and provides user feedback
-"""
-
 import sys
 import os
 
 def check_dependencies():
-    """Check if all required dependencies are available"""
     print("🔍 Checking dependencies...")
     
     required_packages = [
@@ -42,12 +36,10 @@ def check_dependencies():
     return True
 
 def start_application():
-    """Start the podcast application"""
     try:
         print("\n🚀 Starting PDF2Podcast Application...")
         print("=" * 50)
         
-        # Import and start the app
         from podcast_app_working import demo
         
         print("✅ Application loaded successfully!")
@@ -58,10 +50,9 @@ def start_application():
         print("📱 The app will open in your browser")
         print("🌐 You'll also get a public shareable link")
         
-        # Launch the app
         demo.launch(
             share=True, 
-            debug=False,  # Set to False for production
+            debug=False,
             show_error=True
         )
         
@@ -77,16 +68,13 @@ def start_application():
     return True
 
 def main():
-    """Main startup function"""
     print("🎙️ PDF2Podcast - Startup Manager")
     print("=" * 40)
     
-    # Check dependencies first
     if not check_dependencies():
         print("\n❌ Dependency check failed. Please install missing packages.")
         sys.exit(1)
     
-    # Start the application
     if start_application():
         print("\n🎉 Application started successfully!")
     else:

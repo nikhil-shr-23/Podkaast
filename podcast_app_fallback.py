@@ -5,25 +5,19 @@ import logging
 import requests
 from pathlib import Path
 
-# Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def convert_pdf_to_podcast_fallback(pdf_file, url, question, tone, length, language, use_advanced_audio):
-    """Convert PDF to podcast using a fallback method"""
     temp_path = None
     try:
         if pdf_file is None:
             return None, "Error: Please upload a PDF file"
         
-        # Save uploaded file to temporary location
         with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
             tmp_file.write(pdf_file)
             temp_path = tmp_file.name
 
-        # For now, return a mock response since the original API is unreliable
-        # In a real implementation, you would integrate with a working text-to-speech service
-        
         mock_transcript = f"""
 # Podcast Transcript
 
@@ -75,7 +69,6 @@ Size: {os.path.getsize(temp_path)} bytes
         return None, f"Error: {str(e)}"
     
     finally:
-        # Clean up temp file
         if temp_path and os.path.exists(temp_path):
             try:
                 os.unlink(temp_path)
@@ -83,9 +76,7 @@ Size: {os.path.getsize(temp_path)} bytes
                 logger.warning(f"Failed to cleanup temp file: {cleanup_error}")
 
 def convert_pdf_to_podcast(pdf_file, url, question, tone, length, language, use_advanced_audio):
-    """Main conversion function with fallback"""
     try:
-        # Try the original method first
         from gradio_client import Client, handle_file
         
         temp_path = None
@@ -93,15 +84,12 @@ def convert_pdf_to_podcast(pdf_file, url, question, tone, length, language, use_
             if pdf_file is None:
                 return None, "Error: Please upload a PDF file"
             
-            # Save uploaded file to temporary location
             with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
                 tmp_file.write(pdf_file)
                 temp_path = tmp_file.name
 
-            # Initialize client and make prediction
             client = Client("gabrielchua/open-notebooklm")
             
-            # Prepare the API call with proper error handling
             try:
                 result = client.predict(
                     files=[handle_file(temp_path)],
@@ -115,17 +103,15 @@ def convert_pdf_to_podcast(pdf_file, url, question, tone, length, language, use_
                 )
                 
                 if result and len(result) >= 2:
-                    return result[0], result[1]  # Returns (audio_path, transcript)
+                    return result[0], result[1]
                 else:
                     return None, "Error: Invalid response from API"
                     
             except Exception as api_error:
                 logger.error(f"API call failed: {str(api_error)}")
-                # Fall back to mock response
                 return convert_pdf_to_podcast_fallback(pdf_file, url, question, tone, length, language, use_advanced_audio)
         
         finally:
-            # Clean up temp file
             if temp_path and os.path.exists(temp_path):
                 try:
                     os.unlink(temp_path)
@@ -139,14 +125,12 @@ def convert_pdf_to_podcast(pdf_file, url, question, tone, length, language, use_
         logger.error(f"Main conversion failed: {str(e)}")
         return convert_pdf_to_podcast_fallback(pdf_file, url, question, tone, length, language, use_advanced_audio)
 
-# Create Gradio interface
 with gr.Blocks(title="LumeCast: Convert PDFs to Podcasts") as demo:
     gr.Markdown("# LumeCast: Convert PDFs to Podcasts")
     gr.Markdown("⚠️ **Note:** The original API is experiencing issues. This version includes fallback functionality.")
     
     with gr.Row():
         with gr.Column():
-            # Input components
             pdf_input = gr.File(
                 label="Upload your PDF",
                 file_types=[".pdf"],
@@ -195,12 +179,10 @@ with gr.Blocks(title="LumeCast: Convert PDFs to Podcasts") as demo:
             convert_btn = gr.Button("Convert to Podcast", variant="primary")
         
         with gr.Column():
-            # Output components
             audio_output = gr.Audio(label="Generated Podcast")
             transcript_output = gr.Markdown(label="Transcript")
             status_output = gr.Textbox(label="Status", interactive=False)
 
-    # Handle conversion
     def handle_conversion(pdf_file, url, question, tone, length, language, use_advanced_audio):
         try:
             audio, transcript = convert_pdf_to_podcast(pdf_file, url, question, tone, length, language, use_advanced_audio)
@@ -227,7 +209,6 @@ with gr.Blocks(title="LumeCast: Convert PDFs to Podcasts") as demo:
         outputs=[audio_output, transcript_output, status_output]
     )
 
-# Launch the app
 if __name__ == "__main__":
     try:
         demo.launch(share=True, debug=True)

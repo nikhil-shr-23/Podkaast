@@ -6,12 +6,11 @@ import requests
 from pathlib import Path
 import time
 
-# Set up logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def extract_text_from_pdf(pdf_file):
-    """Extract text from PDF file"""
+    temp_path = None
     try:
         import pypdf
         with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
@@ -31,9 +30,7 @@ def extract_text_from_pdf(pdf_file):
         return f"Error extracting text from PDF: {str(e)}"
 
 def generate_podcast_script(text, question, tone, length, language):
-    """Generate a podcast script from the extracted text"""
     try:
-        # Simple script generation based on parameters
         if question:
             focus = f"Focusing on: {question}"
         else:
@@ -65,15 +62,12 @@ Thank you for listening! This podcast was generated from your PDF content.
         return f"Error generating script: {str(e)}"
 
 def text_to_speech_gtts(text, language="en"):
-    """Convert text to speech using Google TTS (gTTS)"""
     try:
         from gtts import gTTS
         
-        # Create temporary file for audio
         with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as tmp_file:
             temp_path = tmp_file.name
         
-        # Language mapping
         lang_map = {
             "English": "en",
             "Spanish": "es", 
@@ -92,7 +86,6 @@ def text_to_speech_gtts(text, language="en"):
         
         lang_code = lang_map.get(language, "en")
         
-        # Generate speech
         tts = gTTS(text=text, lang=lang_code, slow=False)
         tts.save(temp_path)
         
@@ -103,22 +96,17 @@ def text_to_speech_gtts(text, language="en"):
         return None
 
 def text_to_speech_pyttsx3(text):
-    """Convert text to speech using pyttsx3 (offline)"""
     try:
         import pyttsx3
         
-        # Create temporary file for audio
         with tempfile.NamedTemporaryFile(delete=False, suffix='.wav') as tmp_file:
             temp_path = tmp_file.name
         
-        # Initialize text-to-speech engine
         engine = pyttsx3.init()
         
-        # Set properties
-        engine.setProperty('rate', 150)    # Speed of speech
-        engine.setProperty('volume', 0.9)  # Volume (0.0 to 1.0)
+        engine.setProperty('rate', 150)
+        engine.setProperty('volume', 0.9)
         
-        # Save to file
         engine.save_to_file(text, temp_path)
         engine.runAndWait()
         
@@ -129,7 +117,6 @@ def text_to_speech_pyttsx3(text):
         return None
 
 def convert_pdf_to_podcast(pdf_file, url, question, tone, length, language, use_advanced_audio):
-    """Convert PDF to podcast using working TTS services"""
     temp_path = None
     audio_path = None
     
@@ -137,23 +124,17 @@ def convert_pdf_to_podcast(pdf_file, url, question, tone, length, language, use_
         if pdf_file is None:
             return None, "Error: Please upload a PDF file"
         
-        # Extract text from PDF
         text = extract_text_from_pdf(pdf_file)
         if text.startswith("Error"):
             return None, text
         
-        # Generate podcast script
         script = generate_podcast_script(text, question, tone, length, language)
         
-        # Convert to speech
         if use_advanced_audio:
-            # Try gTTS first (online, better quality)
             audio_path = text_to_speech_gtts(script, language)
             if not audio_path:
-                # Fallback to pyttsx3 (offline)
                 audio_path = text_to_speech_pyttsx3(script)
         else:
-            # Use offline TTS
             audio_path = text_to_speech_pyttsx3(script)
         
         if audio_path and os.path.exists(audio_path):
@@ -165,14 +146,12 @@ def convert_pdf_to_podcast(pdf_file, url, question, tone, length, language, use_
         logger.error(f"Conversion failed: {str(e)}")
         return None, f"Error: {str(e)}"
 
-# Create Gradio interface
 with gr.Blocks(title="LumeCast: Convert PDFs to Podcasts") as demo:
     gr.Markdown("# 🎙️ LumeCast: Convert PDFs to Podcasts")
     gr.Markdown("✅ **Working Version** - Uses reliable TTS services instead of broken API")
     
     with gr.Row():
         with gr.Column():
-            # Input components
             pdf_input = gr.File(
                 label="📄 Upload your PDF",
                 file_types=[".pdf"],
@@ -223,12 +202,10 @@ with gr.Blocks(title="LumeCast: Convert PDFs to Podcasts") as demo:
             loading_indicator = gr.Text("", visible=False, label="Processing...")
         
         with gr.Column():
-            # Output components
             audio_output = gr.Audio(label="🎵 Generated Podcast")
             transcript_output = gr.Markdown(label="📝 Transcript")
             status_output = gr.Textbox(label="📊 Status", interactive=False, value="Ready to convert PDF to podcast! 🎙️")
 
-    # Handle conversion
     def handle_conversion(pdf_file, url, question, tone, length, language, use_advanced_audio):
         try:
             audio, transcript = convert_pdf_to_podcast(pdf_file, url, question, tone, length, language, use_advanced_audio)
@@ -258,7 +235,6 @@ with gr.Blocks(title="LumeCast: Convert PDFs to Podcasts") as demo:
         show_progress=True
     )
 
-# Launch the app
 if __name__ == "__main__":
     try:
         print("🚀 Starting LumeCast - Working Version")

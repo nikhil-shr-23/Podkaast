@@ -1,30 +1,20 @@
 #!/usr/bin/env python3
-"""
-Demo script for the working PDF2Podcast TTS functionality
-This tests the core functions without launching the full Gradio interface
-"""
-
 import tempfile
 import os
 
 def test_pdf_text_extraction():
-    """Test PDF text extraction"""
     print("🧪 Testing PDF Text Extraction...")
     
     try:
-        # Create a simple test PDF content
         test_content = b"Test PDF content for podcast generation"
         
-        # Test the extraction function
         from podcast_app_working import extract_text_from_pdf
         
-        # Create a mock PDF file
         with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
             tmp_file.write(test_content)
             temp_path = tmp_file.name
         
         try:
-            # This will fail since it's not a real PDF, but we can test the function structure
             result = extract_text_from_pdf(test_content)
             print(f"✅ Text extraction function works: {result[:50]}...")
         finally:
@@ -37,7 +27,6 @@ def test_pdf_text_extraction():
         return False
 
 def test_script_generation():
-    """Test podcast script generation"""
     print("\n🧪 Testing Podcast Script Generation...")
     
     try:
@@ -59,11 +48,9 @@ def test_script_generation():
         return False
 
 def test_tts_functionality():
-    """Test text-to-speech functionality"""
     print("\n🧪 Testing Text-to-Speech...")
     
     try:
-        # Test offline TTS first
         from podcast_app_working import text_to_speech_pyttsx3
         
         test_text = "Hello, this is a test of the text to speech functionality."
@@ -73,7 +60,6 @@ def test_tts_functionality():
             print(f"✅ Offline TTS successful! Audio saved to: {audio_path}")
             print(f"Audio file size: {os.path.getsize(audio_path)} bytes")
             
-            # Clean up
             os.unlink(audio_path)
             return True
         else:
@@ -85,7 +71,6 @@ def test_tts_functionality():
         return False
 
 def test_gtts_functionality():
-    """Test Google TTS functionality"""
     print("\n🧪 Testing Google TTS (Online)...")
     
     try:
@@ -98,7 +83,6 @@ def test_gtts_functionality():
             print(f"✅ Google TTS successful! Audio saved to: {audio_path}")
             print(f"Audio file size: {os.path.getsize(audio_path)} bytes")
             
-            # Clean up
             os.unlink(audio_path)
             return True
         else:
@@ -110,7 +94,6 @@ def test_gtts_functionality():
         return False
 
 def main():
-    """Run all tests"""
     print("🎙️ PDF2Podcast Working Version - Functionality Test")
     print("=" * 60)
     

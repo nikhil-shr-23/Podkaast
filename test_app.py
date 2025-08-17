@@ -1,14 +1,8 @@
 #!/usr/bin/env python3
-"""
-Test script for PDF2Podcast application
-This helps identify runtime issues before running the main app
-"""
-
 import sys
 import importlib.util
 
 def test_imports():
-    """Test if all required packages can be imported"""
     required_packages = [
         'gradio',
         'gradio_client',
@@ -44,21 +38,17 @@ def test_imports():
     return True
 
 def test_gradio_client():
-    """Test if gradio_client can connect to the API"""
     try:
         from gradio_client import Client
         print("\nTesting Gradio Client connection...")
         
-        # Test with a simple, known working space
         client = Client("gradio/hello_world")
         print("✅ Gradio Client initialized successfully")
         
-        # Test basic functionality - use a valid API name
         try:
             result = client.predict("Hello", api_name="/greet")
             print(f"✅ Test API call successful: {result}")
         except Exception as api_error:
-            # Try a different approach - just test client creation
             print(f"⚠️  API call failed (expected): {api_error}")
             print("✅ Client creation successful - this is sufficient for our app")
         
@@ -69,23 +59,19 @@ def test_gradio_client():
         return False
 
 def test_file_operations():
-    """Test file operations"""
     import tempfile
     import os
     
     print("\nTesting file operations...")
     
     try:
-        # Test temp file creation
         with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as tmp_file:
             tmp_file.write(b"test content")
             temp_path = tmp_file.name
         
-        # Test file existence
         if os.path.exists(temp_path):
             print("✅ Temporary file created successfully")
         
-        # Test file cleanup
         os.unlink(temp_path)
         if not os.path.exists(temp_path):
             print("✅ Temporary file cleanup successful")
@@ -97,7 +83,6 @@ def test_file_operations():
         return False
 
 def main():
-    """Run all tests"""
     print("🧪 PDF2Podcast Application Test Suite")
     print("=" * 50)
     
